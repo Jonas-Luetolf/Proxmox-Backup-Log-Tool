@@ -26,10 +26,16 @@ public class EmailClient {
     }
 
     /**
-     *Logs into the Email server
+     *Logs into the Email server if there is no active session
+     *
+     * This methode checks if there is an active session. If not, it
+     * creates a new email session using the provided properties and tries
+     * to connect to the email server via imap
+     *
+     *
+     * @throws RuntimeException If an error occurs during login
      */
     public void login(){
-        /* only log in if there isn't a session */
         if (session == null){
 
             try {
@@ -48,7 +54,10 @@ public class EmailClient {
     /**
      * Logs out of the Email server
      *
-     * @implNote MessagingException ignored
+     * This method logs out of an email server if there is an active session.
+     * It sets the email store and session to null, allowing to log in again later.
+     *
+     * @implNote MessagingException is ignored as it indicates that the email store was not open
      */
     public void logout(){
         try {
@@ -65,10 +74,13 @@ public class EmailClient {
     }
 
     /**
-     * gets all emails from a specific Email folder
+     * Gets all emails from a specific Email folder
+     *
+     * This method opens the specified email folder and gets all emails in it.
      *
      * @param folderName The folder name to get data from
      * @return an ArrayList with all Emails in the specified folder
+     * @throws RuntimeException If an error occurs during the read of the email Folder
      * @implNote the email folder won't be closed
      */
     public List<Message> getEmailsFrom(String folderName){
