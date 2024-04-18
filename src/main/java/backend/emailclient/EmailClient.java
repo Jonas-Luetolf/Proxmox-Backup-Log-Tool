@@ -1,6 +1,8 @@
 package backend.emailclient;
 import jakarta.mail.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 public class EmailClient {
@@ -8,7 +10,7 @@ public class EmailClient {
     private final String password;
     private final String host;
     private Session session = null;
-    public Store emailStore = null;
+    private Store emailStore = null;
     private final Properties props = new Properties();
 
     public EmailClient(String emailAddr, String password, String host, int port, boolean sslEnable) {
@@ -64,17 +66,17 @@ public class EmailClient {
 
     /**
      * gets all emails from a specific Email folder
-     * @implNote the email folder won't be closed
      *
      * @param folderName The folder name to get data from
      * @return an ArrayList with all Emails in the specified folder
+     * @implNote the email folder won't be closed
      */
-    public Message[] getEmailsFrom(String folderName){
+    public List<Message> getEmailsFrom(String folderName){
         try {
             Folder emailFolder = this.emailStore.getFolder(folderName);
             emailFolder.open(Folder.READ_WRITE);
 
-            return emailFolder.getMessages();
+            return Arrays.asList(emailFolder.getMessages());
         }
 
         catch (MessagingException e) {
