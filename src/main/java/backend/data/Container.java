@@ -2,9 +2,9 @@ package backend.data;
 import java.util.ArrayList;
 
 public class Container {
-    private int id;
-    private String name;
-    private ArrayList<Log> logs = new ArrayList<>();
+    private final int id;
+    private final String name;
+    private final ArrayList<Log> logs = new ArrayList<>();
 
     public Container(int id, String name) {
         this.id = id;
