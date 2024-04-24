@@ -1,33 +1,27 @@
 package backend.data;
 
 public class Log {
-    private String name;
-    private boolean status;
-    private int size;
-    private int time;
-    private String logText;
+    private final boolean status;
+    private final float size; // Unit GB
+    private final float time; // Unit: min
+    private final String logText;
 
-    public Log(String name, boolean status, int size, int time, String logText) {
-        this.name = name;
+    public Log(boolean status, float size, float time, String logText) {
         this.status = status;
         this.size = size;
         this.time = time;
         this.logText = logText;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public boolean isStatus() {
         return status;
     }
 
-    public int getSize() {
+    public float getSize() {
         return size;
     }
 
-    public int getTime() {
+    public float getTime() {
         return time;
     }
 

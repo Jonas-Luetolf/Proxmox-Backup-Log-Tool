@@ -1,10 +1,11 @@
 package backend.parser;
 
 import backend.data.Container;
+import jakarta.mail.Message;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface Parser {
-    void parse(ArrayList emails);
-    ArrayList<Container> getContainers();
+    void parse(List<Message> emails);
+    List<Container> getContainers();
 }

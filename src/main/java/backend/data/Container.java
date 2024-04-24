@@ -4,12 +4,11 @@ import java.util.ArrayList;
 public class Container {
     private int id;
     private String name;
-    private ArrayList<Log> logs;
+    private ArrayList<Log> logs = new ArrayList<>();
 
-    public Container(int id, String name, ArrayList<Log> logs) {
+    public Container(int id, String name) {
         this.id = id;
         this.name = name;
-        this.logs = logs;
     }
 
     public int getId() {
