@@ -1,34 +1,31 @@
-import backend.data.Container;
 import backend.emailclient.EmailClient;
-
-// Jakarta Mail imports
 import backend.parser.ProxmoxParser;
-import jakarta.mail.MessagingException;
+import frontend.controller.LoginController;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.util.List;
+public class Main extends Application {
 
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+        // Load the FXML file
+        EmailClient emailClient = new EmailClient();
+        ProxmoxParser proxmoxParser = new ProxmoxParser();
 
-public class Main {
-    public static void main(String[] args) throws MessagingException, IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/login.fxml"));
+        loader.setController(new LoginController(emailClient, proxmoxParser));
+        Parent root = loader.load();
 
-        EmailClient email = new EmailClient("jonas.luetolf@outlook.com","","outlook.office365.com",993, true);
-        email.login();
+        // Set up the scene
+        primaryStage.setTitle("Login");
+        primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.show();
+    }
 
-        ProxmoxParser parser = new ProxmoxParser();
-
-        parser.parse(email.getEmailsFrom("Backup-Logs").subList(0,10));
-        List<Container> containers = parser.getContainers();
-
-        System.out.printf("Parsed %d containers.\n", containers.size());
-        for (Container container : containers) {
-            System.out.printf("Parsed %d logs from container %d: %s\n",container.getLogs().size(),container.getId(),container.getName());
-            System.out.printf("Container ID: %d Backup Size: %f Gib, Time: %f min\n",container.getId(),container.getLogs().get(0).getSize(),container.getLogs().get(0).getTime());
-        }
-
-
-
-        email.logout();
-
+    public static void main(String[] args) {
+        launch(args);
     }
 }
