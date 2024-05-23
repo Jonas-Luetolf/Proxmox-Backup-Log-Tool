@@ -6,28 +6,12 @@ import java.util.List;
 import java.util.Properties;
 
 public class EmailClient {
-    private final String emailAddr;
-    private final String password;
-    private final String host;
     private Session session = null;
     private Store emailStore = null;
     private final Properties props = new Properties();
 
-    public EmailClient(String emailAddr, String password, String host, int port, boolean sslEnable) {
-        this.emailAddr = emailAddr;
-        this.password = password;
-        this.host = host;
-
-        // set Properties used later in session
-        props.setProperty("mail.imap.host", host);
-        props.setProperty("mail.imap.port", String.valueOf(port));
-        props.setProperty("mail.imap.ssl.enable", String.valueOf(sslEnable));
-
-    }
-
     /**
      *Logs into the Email server if there is no active session
-     *
      * This methode checks if there is an active session. If not, it
      * creates a new email session using the provided properties and tries
      * to connect to the email server via imap
@@ -35,7 +19,13 @@ public class EmailClient {
      *
      * @throws RuntimeException If an error occurs during login
      */
-    public void login(){
+    public void login(String emailAddr, String password, String host, int port, boolean sslEnable) {
+
+        // set Properties used later in session
+        props.setProperty("mail.imap.host", host);
+        props.setProperty("mail.imap.port", String.valueOf(port));
+        props.setProperty("mail.imap.ssl.enable", String.valueOf(sslEnable));
+
         if (session == null){
 
             try {
@@ -53,7 +43,6 @@ public class EmailClient {
 
     /**
      * Logs out of the Email server
-     *
      * This method logs out of an email server if there is an active session.
      * It sets the email store and session to null, allowing to log in again later.
      *
@@ -75,7 +64,6 @@ public class EmailClient {
 
     /**
      * Gets all emails from a specific Email folder
-     *
      * This method opens the specified email folder and gets all emails in it.
      *
      * @param folderName The folder name to get data from
