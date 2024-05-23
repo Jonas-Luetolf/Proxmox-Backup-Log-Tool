@@ -11,6 +11,7 @@ import jakarta.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class ProxmoxParser implements Parser {
     private final ArrayList<Container> containers = new ArrayList<>();
@@ -52,7 +53,7 @@ public class ProxmoxParser implements Parser {
             try {
                 int id = Integer.parseInt(details.get(0));
                 String name = details.get(1);
-                boolean status = details.get(2).equals("ok");
+                boolean status = details.get(2).equalsIgnoreCase("ok");
                 float time = getTimeAsFloat(details.get(3));
                 float size = (float) (getFloatFromString(details.get(4)) * getFactorToGib(details.get(4)));
 
