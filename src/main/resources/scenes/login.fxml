@@ -8,7 +8,7 @@
       <Label alignment="CENTER" prefHeight="420.0" prefWidth="600.0" text="Welcom to Proxmox Backup Log Tool" />
       <Label text="Enter your email server credentials" />
       <TextField fx:id="emailAdderEntry" prefHeight="81.0" prefWidth="600.0" promptText="Email Addresse" />
-      <TextField fx:id="emailPwEntry" promptText="Passwort" />
+      <PasswordField fx:id="emailPwEntry" promptText="Passwort" />
       <TextField fx:id="smtpAddrEntry" promptText="SMTP Server Address" />
       <TextField fx:id="smtpPort" promptText="SMTP Port" />
       <TextField fx:id="emailFolderEntry" promptText="Email Folder" text="Backup-Logs" />
