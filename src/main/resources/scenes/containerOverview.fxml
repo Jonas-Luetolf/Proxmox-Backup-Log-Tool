@@ -11,7 +11,7 @@
          <font>
             <Font size="24.0" />
          </font></Label>
-      <PieChart prefHeight="154.0" prefWidth="372.0" title="Status" />
+      <PieChart fx:id="statusChart" prefHeight="154.0" prefWidth="372.0" title="Status" />
       <LineChart title="Size">
         <xAxis>
           <CategoryAxis side="BOTTOM" />
