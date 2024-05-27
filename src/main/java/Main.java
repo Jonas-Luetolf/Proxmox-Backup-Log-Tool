@@ -16,7 +16,8 @@ public class Main extends Application {
         ProxmoxParser proxmoxParser = new ProxmoxParser();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/login.fxml"));
-        loader.setController(new LoginController(emailClient, proxmoxParser));
+        loader.setController(new LoginController(emailClient, proxmoxParser, primaryStage));
+
         Parent root = loader.load();
 
         // Set up the scene

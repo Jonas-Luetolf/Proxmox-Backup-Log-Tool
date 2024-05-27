@@ -19,6 +19,8 @@ import java.util.Objects;
 public class LoginController {
     private EmailClient emailclient;
     private ProxmoxParser proxmoxParser;
+    private final Stage primaryStage;
+
     @FXML
     private TextField emailAdderEntry;
 
@@ -34,10 +36,11 @@ public class LoginController {
     private TextField emailFolderEntry;
 
 
-    public LoginController(EmailClient emailClient, ProxmoxParser proxmoxParser) {
+    public LoginController(EmailClient emailClient, ProxmoxParser proxmoxParser, Stage primaryStage) {
         this.emailclient = emailClient;
         this.proxmoxParser = proxmoxParser;
 
+        this.primaryStage = primaryStage;
     }
 
     @FXML
@@ -48,9 +51,11 @@ public class LoginController {
         System.out.println(proxmoxParser.getContainers().get(0).getLogs().get(0).getSize());
         emailclient.logout();
 
-        Parent overview = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/scenes/overview.fxml")));
-        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(overview));
-        stage.setTitle("Overview");
+        // Load Overview Page
+        FXMLLoader overview = new FXMLLoader(getClass().getResource("/scenes/overview.fxml"));
+        overview.setController(new OverviewController(this.proxmoxParser, primaryStage));
+        Parent overviewRoot = overview.load();
+        primaryStage.setScene(new Scene(overviewRoot));
+        primaryStage.setTitle("Overview");
     }
 }
