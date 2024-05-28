@@ -1,6 +1,9 @@
 package backend.data;
+import javafx.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.ListIterator;
 
 public class Container {
     private final int id;
@@ -49,4 +52,11 @@ public class Container {
         return new ArrayList<>(Arrays.asList(num_ok, this.logs.size() - num_ok));
     }
 
+    public ArrayList<Pair<Number, Number>> getSizeStatistics () {
+        ArrayList<Pair<Number, Number>> points = new ArrayList<>();
+        ListIterator<Log> iterator = logs.listIterator();
+        while (iterator.hasNext()) points.add(new Pair<>(iterator.nextIndex(), iterator.next().getSize()));
+
+        return points;
+    }
 }

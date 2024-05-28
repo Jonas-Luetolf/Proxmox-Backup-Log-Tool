@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class LoginController {
-    private EmailClient emailclient;
-    private ProxmoxParser proxmoxParser;
+    private final EmailClient emailclient;
+    private final ProxmoxParser proxmoxParser;
     private final Stage primaryStage;
 
     @FXML
@@ -45,10 +45,8 @@ public class LoginController {
 
     @FXML
     private void loginButtonOnClick(ActionEvent event) throws IOException {
-        System.out.println(emailAdderEntry.getText());
         emailclient.login(emailAdderEntry.getText(),emailPwEntry.getText(),smtpAddrEntry.getText(), Integer.parseInt(smtpPort.getText()),true);
-        proxmoxParser.parse(emailclient.getEmailsFrom(emailFolderEntry.getText()).subList(0,5));
-        System.out.println(proxmoxParser.getContainers().get(0).getLogs().get(0).getSize());
+        proxmoxParser.parse(emailclient.getEmailsFrom(emailFolderEntry.getText()));
         emailclient.logout();
 
         // Load Overview Page

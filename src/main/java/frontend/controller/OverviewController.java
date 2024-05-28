@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
@@ -18,7 +17,7 @@ import static java.lang.Integer.*;
 
 public class OverviewController {
     private final Stage primaryStage;
-    private Parser parser;
+    private final Parser parser;
     @FXML
     private TilePane buttonPane;
 
@@ -35,9 +34,6 @@ public class OverviewController {
             containerButton.setOnAction(event -> handelClick(containerButton));
             buttonPane.getChildren().add(containerButton);
         }
-
-
-
     }
 
     private void handelClick(Button button){
@@ -56,6 +52,4 @@ public class OverviewController {
         }
         primaryStage.setScene(new Scene(overviewRoot));
     }
-
-
-    }
+}

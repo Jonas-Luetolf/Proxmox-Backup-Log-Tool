@@ -11,14 +11,19 @@
          <font>
             <Font size="24.0" />
          </font></Label>
-      <PieChart fx:id="statusChart" prefHeight="154.0" prefWidth="372.0" title="Status" />
-      <LineChart title="Size">
-        <xAxis>
-          <CategoryAxis side="BOTTOM" />
-        </xAxis>
-        <yAxis>
-          <NumberAxis side="LEFT" />
-        </yAxis>
-      </LineChart>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <PieChart fx:id="statusChart" prefHeight="154.0" prefWidth="372.0" title="Status" />
+            <LineChart fx:id="sizeChart" title="Size">
+              <xAxis>
+                <NumberAxis side="BOTTOM" />
+              </xAxis>
+              <yAxis>
+                <NumberAxis side="LEFT" />
+              </yAxis>
+            </LineChart>
+         </children>
+      </HBox>
+      <TilePane fx:id="logButtonsPane" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </VBox>
