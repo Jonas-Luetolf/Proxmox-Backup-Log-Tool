@@ -34,7 +34,7 @@ public class LoginController {
     @FXML
     private TextField emailFolderEntry;
 
-    private DataSingleton data = DataSingleton.getInstance();
+    private final DataSingleton data = DataSingleton.getInstance();
 
     public LoginController(Stage primaryStage) {
         this.primaryStage = primaryStage;

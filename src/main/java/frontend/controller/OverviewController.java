@@ -18,7 +18,7 @@ import static java.lang.Integer.*;
 
 public class OverviewController {
     private final Stage primaryStage;
-    private DataSingleton data = DataSingleton.getInstance();
+    private final DataSingleton data = DataSingleton.getInstance();
     @FXML
     private TilePane buttonPane;
 
