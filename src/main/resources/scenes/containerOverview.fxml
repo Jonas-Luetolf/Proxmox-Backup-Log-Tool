@@ -25,5 +25,6 @@
          </children>
       </HBox>
       <TilePane fx:id="logButtonsPane" prefHeight="200.0" prefWidth="200.0" />
+      <Button mnemonicParsing="false" onAction="#handleBackButtonOnCLick" text="Zurück" />
    </children>
 </VBox>

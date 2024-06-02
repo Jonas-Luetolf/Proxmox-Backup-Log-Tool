@@ -1,5 +1,6 @@
 package frontend.controller;
 
+import backend.data.DataSingleton;
 import backend.emailclient.EmailClient;
 import backend.parser.ProxmoxParser;
 import javafx.event.ActionEvent;
@@ -17,8 +18,6 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class LoginController {
-    private final EmailClient emailclient;
-    private final ProxmoxParser proxmoxParser;
     private final Stage primaryStage;
 
     @FXML
@@ -35,24 +34,23 @@ public class LoginController {
     @FXML
     private TextField emailFolderEntry;
 
+    private DataSingleton data = DataSingleton.getInstance();
 
-    public LoginController(EmailClient emailClient, ProxmoxParser proxmoxParser, Stage primaryStage) {
-        this.emailclient = emailClient;
-        this.proxmoxParser = proxmoxParser;
-
+    public LoginController(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
     @FXML
     private void loginButtonOnClick(ActionEvent event) throws IOException {
-        emailclient.login(emailAdderEntry.getText(),emailPwEntry.getText(),smtpAddrEntry.getText(), Integer.parseInt(smtpPort.getText()),true);
-        proxmoxParser.parse(emailclient.getEmailsFrom(emailFolderEntry.getText()));
-        emailclient.logout();
+        data.getEmailClient().login(emailAdderEntry.getText(),emailPwEntry.getText(),smtpAddrEntry.getText(), Integer.parseInt(smtpPort.getText()),true);
+        data.getParser().parse(data.getEmailClient().getEmailsFrom(emailFolderEntry.getText()));
+        data.getEmailClient().logout();
 
         // Load Overview Page
         FXMLLoader overview = new FXMLLoader(getClass().getResource("/scenes/overview.fxml"));
-        overview.setController(new OverviewController(this.proxmoxParser, primaryStage));
+        overview.setController(new OverviewController(primaryStage));
         Parent overviewRoot = overview.load();
+
         primaryStage.setScene(new Scene(overviewRoot));
         primaryStage.setTitle("Overview");
     }

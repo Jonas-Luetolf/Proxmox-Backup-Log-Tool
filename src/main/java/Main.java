@@ -1,3 +1,4 @@
+import backend.data.DataSingleton;
 import backend.emailclient.EmailClient;
 import backend.parser.ProxmoxParser;
 import frontend.controller.LoginController;
@@ -12,11 +13,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         // Load the FXML file
-        EmailClient emailClient = new EmailClient();
-        ProxmoxParser proxmoxParser = new ProxmoxParser();
+        DataSingleton data = DataSingleton.getInstance();
+        data.setEmailClient(new EmailClient());
+        data.setParser(new ProxmoxParser());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/login.fxml"));
-        loader.setController(new LoginController(emailClient, proxmoxParser, primaryStage));
+        loader.setController(new LoginController(primaryStage));
 
         Parent root = loader.load();
 

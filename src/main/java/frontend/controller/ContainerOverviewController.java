@@ -2,18 +2,26 @@ package frontend.controller;
 
 import backend.data.Container;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ContainerOverviewController {
-    Container container;
+    private final Container container;
+
+    private final Stage primaryStage;
 
     @FXML
     private Label containerName;
@@ -24,9 +32,19 @@ public class ContainerOverviewController {
     @FXML
     private LineChart<Number, Number> sizeChart;
 
-    public ContainerOverviewController (Container container) {
+    public ContainerOverviewController (Container container, Stage primaryStage) {
         this.container = container;
+        this.primaryStage = primaryStage;
+    }
 
+    @FXML
+    private void handleBackButtonOnCLick(ActionEvent event) throws IOException {
+        FXMLLoader containerOverviewLoader = new FXMLLoader(getClass().getResource("/scenes/overview.fxml"));
+        containerOverviewLoader.setController(new OverviewController(primaryStage));
+        Parent overviewRoot = containerOverviewLoader.load();
+
+        primaryStage.setScene(new Scene(overviewRoot));
+        primaryStage.setTitle("Overview");
     }
 
     private void initializeStatusChart(){
