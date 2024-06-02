@@ -15,10 +15,13 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-import java.awt.*;
+
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -48,17 +51,39 @@ public class ContainerOverviewController {
     }
 
     @FXML
-    private void handleBackButtonOnCLick(ActionEvent event) throws IOException {
+    private void handleBackButtonOnCLick(ActionEvent event) {
         FXMLLoader containerOverviewLoader = new FXMLLoader(getClass().getResource("/scenes/overview.fxml"));
         containerOverviewLoader.setController(new OverviewController(primaryStage));
-        Parent overviewRoot = containerOverviewLoader.load();
+        Parent overviewRoot = null;
+
+        try {
+            overviewRoot = containerOverviewLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         primaryStage.setScene(new Scene(overviewRoot));
         primaryStage.setTitle("Overview");
     }
 
-    private void handelLogButtonOnClick (int index){
-        System.out.println(container.getLogs().get(index).getLogText());
+    private void handelLogButtonOnClick (int index) throws IOException {
+        Log log = container.getLogs().get(index);
+
+        Stage logDetailsStage = new Stage();
+        logDetailsStage.setTitle("Log Details");
+        FXMLLoader logDetailsLoader = new FXMLLoader(getClass().getResource("/scenes/logDetails.fxml"));
+
+        VBox content = logDetailsLoader.load();
+
+        Label title = (Label) content.lookup("#titelLabel");
+        title.setText("Log: %s %f GB %f min".formatted(log.isStatus(), log.getSize(), log.getTime()));
+
+        TextArea logTextArea = (TextArea) content.lookup("#logTextArea");
+        logTextArea.setText(log.getLogText());
+        logTextArea.setEditable(false);
+
+        logDetailsStage.setScene(new Scene(content, 600, 400));
+        logDetailsStage.show();
     }
 
     private void initializeLogButtons(){
@@ -72,7 +97,14 @@ public class ContainerOverviewController {
             if (log.isStatus()) status="ok";
 
             Button logButton = new Button("LOG: %s %f".formatted(status, log.getSize()));
-            logButton.setOnAction(event -> handelLogButtonOnClick(index));
+            logButton.setOnAction(event -> {
+                try {
+                    handelLogButtonOnClick(index);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
             logButtonsPane.getChildren().add(logButton);
         }
     }
