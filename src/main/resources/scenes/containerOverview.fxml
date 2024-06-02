@@ -24,6 +24,11 @@
             </LineChart>
          </children>
       </HBox>
+      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0" prefWidth="606.0" text="Logs">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
       <TilePane fx:id="logButtonsPane" prefHeight="200.0" prefWidth="200.0" />
       <Button mnemonicParsing="false" onAction="#handleBackButtonOnCLick" text="Zurück" />
    </children>
