@@ -96,16 +96,19 @@ public class ContainerOverviewController {
             String status = "failed";
             if (log.isStatus()) status="ok";
 
-            Button logButton = new Button("LOG: %s %f".formatted(status, log.getSize()));
+            Button logButton = new Button("LOG %d: %s".formatted(index, status));
+            int finalIndex = index;
             logButton.setOnAction(event -> {
                 try {
-                    handelLogButtonOnClick(index);
+                    handelLogButtonOnClick(finalIndex);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+
             });
 
             logButtonsPane.getChildren().add(logButton);
+            index +=1;
         }
     }
 
