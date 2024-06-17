@@ -2,11 +2,15 @@ package frontend.controller;
 
 import backend.data.Container;
 import backend.data.Log;
+import backend.markdownfactory.MarkdownFile;
+import backend.markdownfactory.MarkdownHeadline;
+import backend.markdownfactory.MarkdownTable;
+
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
 import javafx.fxml.FXMLLoader;
+
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -17,9 +21,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TextArea;
+
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +66,43 @@ public class ContainerOverviewController {
         }
     }
 
+    @FXML
+    private void handleSaveReportButtonOnCLick(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Report to File");
+
+        File file = fileChooser.showSaveDialog(primaryStage);
+
+        if (file != null) {
+            // build Markdown file
+            MarkdownFile mdFile = new MarkdownFile(file);
+            mdFile.addComponent(new MarkdownHeadline(container.getName() + " ID: " + container.getId(), 0));
+            MarkdownTable mdTable = new MarkdownTable(List.of("Status","Time","Size"), 3);
+
+            for (Log log: container.getLogs()){
+                String status = "failed";
+                if (log.isStatus()) status="ok";
+                mdTable.addRow(List.of(status, log.getTime() + " min",log.getSize()+" GiB"));
+            }
+
+            mdFile.addComponent(mdTable);
+
+            // Write File or print error to stdout
+            try {
+                mdFile.writeToFile();
+            }
+
+            catch (RuntimeException e){
+                System.out.println("ERROR write to file: " + e.getMessage());
+            }
+        }
+
+        else {
+            System.out.println("ERROR: File could not be saved");
+        }
+    }
+
+    @FXML
     private void handelLogButtonOnClick (int index) throws IOException {
         Log log = container.getLogs().get(index);
 
@@ -105,7 +149,6 @@ public class ContainerOverviewController {
             index +=1;
         }
     }
-
 
     private void initializeStatusChart(){
         ArrayList<Integer> statusStatistics = container.getStatusStatistics();
