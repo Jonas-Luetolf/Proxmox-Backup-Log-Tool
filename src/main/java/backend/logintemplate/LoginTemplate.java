@@ -13,6 +13,7 @@ import org.json.simple.parser.ParseException;
 
 public class LoginTemplate {
     private final File templateFile;
+
     private String email = "";
     private String password = "";
     private String imapUrl = "";
@@ -26,7 +27,10 @@ public class LoginTemplate {
 
     private void parse(){
         try {
+            // load the Json file as JSONArray and get first JSONObject
             JSONObject obj = (JSONObject) ((JSONArray) new JSONParser().parse(Files.readAllLines(Path.of(templateFile.getAbsolutePath())).toString())).get(0);
+
+            // settings that are not found in the file get ignored and not filled out
             email = (String) obj.get("email");
             password = (String) obj.get("password");
             imapUrl = (String) obj.get("imapUrl");
@@ -39,7 +43,7 @@ public class LoginTemplate {
         }
 
         catch (IOException e) {
-            System.out.println("IO error: " + e.getMessage());
+            System.out.println("IO error (not valid json file): " + e.getMessage());
         }
 
     }

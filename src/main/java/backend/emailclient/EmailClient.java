@@ -35,6 +35,7 @@ public class EmailClient {
             }
 
             catch (MessagingException e) {
+                session = null;
                 throw new RuntimeException(e);
             }
 

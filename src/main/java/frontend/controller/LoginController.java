@@ -11,7 +11,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import jdk.jfr.Label;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,15 +20,12 @@ public class LoginController {
 
     @FXML
     private TextField emailAdderEntry;
-
     @FXML
     private PasswordField emailPwEntry;
-
     @FXML
     private TextField imapAddrEntry;
     @FXML
     private TextField imapPort;
-
     @FXML
     private TextField emailFolderEntry;
 
@@ -44,6 +40,7 @@ public class LoginController {
         final FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Template File");
         File file = fileChooser.showOpenDialog(primaryStage);
+
         if (file != null) {
             LoginTemplate loginTemplate = new LoginTemplate(file);
 
@@ -55,21 +52,39 @@ public class LoginController {
             emailFolderEntry.setText(loginTemplate.getFolder());
         }
 
-
+        else {
+            System.out.println("ERROR: File could not be opened");
+        }
     }
 
     @FXML
-    private void loginButtonOnClick(ActionEvent event) throws IOException {
-        data.getEmailClient().login(emailAdderEntry.getText(),emailPwEntry.getText(),imapAddrEntry.getText(), Integer.parseInt(imapPort.getText()),true);
-        data.getParser().parse(data.getEmailClient().getEmailsFrom(emailFolderEntry.getText()));
+    private void loginButtonOnClick(ActionEvent event){
+        // download and parse emails
+        try {
+            data.getEmailClient().login(emailAdderEntry.getText(),emailPwEntry.getText(),imapAddrEntry.getText(), Integer.parseInt(imapPort.getText()),true);
+            data.getParser().parse(data.getEmailClient().getEmailsFrom(emailFolderEntry.getText()));
+        }
+
+        catch (RuntimeException e){
+            System.out.println("ERROR: " + e.getMessage());
+            return;
+        }
+
         data.getEmailClient().logout();
 
         // Load Overview Page
         FXMLLoader overview = new FXMLLoader(getClass().getResource("/scenes/overview.fxml"));
         overview.setController(new OverviewController(primaryStage));
-        Parent overviewRoot = overview.load();
+        Parent overviewRoot;
 
-        primaryStage.setScene(new Scene(overviewRoot));
-        primaryStage.setTitle("Overview");
+        try {
+            overviewRoot = overview.load();
+            primaryStage.setScene(new Scene(overviewRoot));
+            primaryStage.setTitle("Overview");
+        }
+
+        catch (IOException e) {
+            System.out.println("ERROR Failed to load overview FXML: " + e.getMessage());
+        }
     }
 }

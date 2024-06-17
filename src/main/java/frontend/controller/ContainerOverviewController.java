@@ -20,14 +20,9 @@ import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-
-
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class ContainerOverviewController {
     private final Container container;
@@ -35,13 +30,10 @@ public class ContainerOverviewController {
     private final Stage primaryStage;
     @FXML
     private TilePane logButtonsPane;
-
     @FXML
     private Label containerName;
-
     @FXML
     private PieChart statusChart;
-
     @FXML
     private LineChart<Number, Number> sizeChart;
 
@@ -54,16 +46,17 @@ public class ContainerOverviewController {
     private void handleBackButtonOnCLick(ActionEvent event) {
         FXMLLoader containerOverviewLoader = new FXMLLoader(getClass().getResource("/scenes/overview.fxml"));
         containerOverviewLoader.setController(new OverviewController(primaryStage));
-        Parent overviewRoot = null;
+        Parent overviewRoot;
 
         try {
             overviewRoot = containerOverviewLoader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+            primaryStage.setScene(new Scene(overviewRoot));
+            primaryStage.setTitle("Overview");
         }
 
-        primaryStage.setScene(new Scene(overviewRoot));
-        primaryStage.setTitle("Overview");
+        catch (IOException e) {
+            System.out.println("ERROR load overview FXML failed: " + e.getMessage());
+        }
     }
 
     private void handelLogButtonOnClick (int index) throws IOException {
@@ -97,13 +90,15 @@ public class ContainerOverviewController {
 
             Button logButton = new Button("LOG %d: %s".formatted(index, status));
             int finalIndex = index;
+
             logButton.setOnAction(event -> {
                 try {
                     handelLogButtonOnClick(finalIndex);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
                 }
 
+                catch (IOException e) {
+                    System.out.println("ERROR load log overview: " + e.getMessage());
+                }
             });
 
             logButtonsPane.getChildren().add(logButton);
@@ -142,6 +137,5 @@ public class ContainerOverviewController {
         initializeStatusChart();
         initializeSizeChart();
         initializeLogButtons();
-
     }
 }
