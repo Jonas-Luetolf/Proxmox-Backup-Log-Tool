@@ -90,7 +90,6 @@ public class ContainerOverviewController {
         List<Log> logs = container.getLogs();
 
         int index =0;
-        Iterator<Log> logIterator = logs.iterator();
 
         for (Log log : logs) {
             String status = "failed";

@@ -11,7 +11,6 @@ import jakarta.mail.MessagingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class ProxmoxParser implements Parser {
     private final ArrayList<Container> containers = new ArrayList<>();

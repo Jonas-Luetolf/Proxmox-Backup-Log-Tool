@@ -1,21 +1,20 @@
 package frontend.controller;
 
 import backend.data.DataSingleton;
-import backend.emailclient.EmailClient;
-import backend.parser.ProxmoxParser;
+import backend.logintemplate.LoginTemplate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import jdk.jfr.Label;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 public class LoginController {
     private final Stage primaryStage;
@@ -27,9 +26,9 @@ public class LoginController {
     private PasswordField emailPwEntry;
 
     @FXML
-    private TextField smtpAddrEntry;
+    private TextField imapAddrEntry;
     @FXML
-    private TextField smtpPort;
+    private TextField imapPort;
 
     @FXML
     private TextField emailFolderEntry;
@@ -41,8 +40,27 @@ public class LoginController {
     }
 
     @FXML
+    private void openTemplateOnClick(ActionEvent event) {
+        final FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Template File");
+        File file = fileChooser.showOpenDialog(primaryStage);
+        if (file != null) {
+            LoginTemplate loginTemplate = new LoginTemplate(file);
+
+            // assign entries to data loaded from file
+            emailAdderEntry.setText(loginTemplate.getEmail());
+            emailPwEntry.setText(loginTemplate.getPassword());
+            imapAddrEntry.setText(loginTemplate.getImapUrl());
+            imapPort.setText(loginTemplate.getPort());
+            emailFolderEntry.setText(loginTemplate.getFolder());
+        }
+
+
+    }
+
+    @FXML
     private void loginButtonOnClick(ActionEvent event) throws IOException {
-        data.getEmailClient().login(emailAdderEntry.getText(),emailPwEntry.getText(),smtpAddrEntry.getText(), Integer.parseInt(smtpPort.getText()),true);
+        data.getEmailClient().login(emailAdderEntry.getText(),emailPwEntry.getText(),imapAddrEntry.getText(), Integer.parseInt(imapPort.getText()),true);
         data.getParser().parse(data.getEmailClient().getEmailsFrom(emailFolderEntry.getText()));
         data.getEmailClient().logout();
 
