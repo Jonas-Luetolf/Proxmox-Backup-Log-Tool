@@ -14,7 +14,8 @@ public class MarkdownFile {
     }
 
     public void addComponent(MarkdownComponent component){
-        this.content += component.getPlainStringRepresentation();
+        content += component.getPlainStringRepresentation();
+        content += "\n";
     }
 
     public void writeToFile(){

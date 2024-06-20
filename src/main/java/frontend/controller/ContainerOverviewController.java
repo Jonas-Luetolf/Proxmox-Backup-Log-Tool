@@ -2,9 +2,7 @@ package frontend.controller;
 
 import backend.data.Container;
 import backend.data.Log;
-import backend.markdownfactory.MarkdownFile;
-import backend.markdownfactory.MarkdownHeadline;
-import backend.markdownfactory.MarkdownTable;
+import backend.markdownfactory.*;
 
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -77,8 +75,9 @@ public class ContainerOverviewController {
             // build Markdown file
             MarkdownFile mdFile = new MarkdownFile(file);
             mdFile.addComponent(new MarkdownHeadline(container.getName() + " ID: " + container.getId(), 0));
-            MarkdownTable mdTable = new MarkdownTable(List.of("Status","Time","Size"), 3);
 
+            // Log list Table
+            MarkdownTable mdTable = new MarkdownTable(List.of("Status","Time","Size"), 3);
             for (Log log: container.getLogs()){
                 String status = "failed";
                 if (log.isStatus()) status="ok";
@@ -86,6 +85,20 @@ public class ContainerOverviewController {
             }
 
             mdFile.addComponent(mdTable);
+
+            // status Pie Chart
+            List<Integer> statusStatistics = container.getStatusStatistics();
+            MarkdownPieChart statusPie = new MarkdownPieChart("Status");
+            statusPie.addClass("OK", statusStatistics.get(0));
+            statusPie.addClass("FAILED", statusStatistics.get(1));
+            mdFile.addComponent(statusPie);
+
+           // size XY Chart
+            Markdown2DLineChart sizeChart = new Markdown2DLineChart("Speicherverlauf","Log nummer", "Speicher in GiB");
+            for (Log log: container.getLogs()){
+                sizeChart.addPoint(log.getSize());
+            }
+            mdFile.addComponent(sizeChart);
 
             // Write File or print error to stdout
             try {
