@@ -28,6 +28,8 @@ public class OverviewController {
 
     @FXML
     private void initialize(){
+
+        // creat a Button for each Container to open Container Overview
         List<Container> containers = data.getParser().getContainers();
 
         for (Container container : containers){
@@ -39,12 +41,19 @@ public class OverviewController {
         }
     }
 
+    /**
+     * This method handels a click of a containerButton created in they initialize methode.
+     *
+     * It opens the Container with the id specified in the Button id field.
+     * @param button Button to handel the Click
+     */
     private void handelClick(Button button){
         int id = parseInt(button.getId());
 
-        // isPresent not needed because only ids form existing containers get saved
+        // isPresent check not needed because only ids form existing containers get saved
         Container selectedContainer = data.getParser().getContainers().stream().filter(c -> c.getId() == id).findFirst().get();
 
+        // Load containerOverview scene
         FXMLLoader containerOverviewLoader = new FXMLLoader(getClass().getResource("/scenes/containerOverview.fxml"));
         containerOverviewLoader.setController(new ContainerOverviewController(selectedContainer, primaryStage));
         Parent overviewRoot;

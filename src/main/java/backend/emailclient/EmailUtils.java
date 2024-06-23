@@ -30,7 +30,6 @@ public final class EmailUtils {
             for (int i = 0; i < content.getCount(); i++) {
                 BodyPart bodyPart = content.getBodyPart(i);
 
-
                 if (bodyPart.getContentType().startsWith("text/plain")) {
                     body.append(bodyPart.getContent());
                 }
@@ -43,7 +42,6 @@ public final class EmailUtils {
 
         return body.toString();
     }
-
 
     /**
      * Extracts the text body from a given Message.

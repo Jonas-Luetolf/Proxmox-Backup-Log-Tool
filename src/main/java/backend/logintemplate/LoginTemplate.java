@@ -25,6 +25,16 @@ public class LoginTemplate {
         this.parse();
     }
 
+    /**
+     * This method parses a Json template File and extracts all found information.
+     *
+     * The method opens the file specified in the Constructor {@code LoginTemplate} and
+     * takes the first JsonObject in the file. It tries to extract
+     * the Login Options. If one element isn't found in the file, it will be left as
+     * an empty String.
+     *
+     * @throws RuntimeException If and Error occurs during reading of the file or parsing.
+     */
     private void parse(){
         try {
             // load the Json file as JSONArray and get first JSONObject
@@ -38,14 +48,9 @@ public class LoginTemplate {
             folder = (String) obj.get("folder");
         }
 
-        catch (ParseException e) {
-            System.out.println("Parsing error: " + e.getMessage());
+        catch (ParseException | IOException e) {
+           throw new RuntimeException(e);
         }
-
-        catch (IOException e) {
-            System.out.println("IO error (not valid json file): " + e.getMessage());
-        }
-
     }
 
     public String getEmail() {

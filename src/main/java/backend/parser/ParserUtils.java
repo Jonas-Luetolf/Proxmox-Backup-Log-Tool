@@ -76,7 +76,6 @@ public final class ParserUtils {
      * @param s the input time string
      * @return a float value representing the time in minutes
      */
-
     public static float getTimeAsFloat(String s){
         List<Integer> timeParts = getAllNums(s);
         float time = 0;

@@ -17,8 +17,8 @@ public class ProxmoxParser implements Parser {
 
     /**
      * parses the given emails and stores the found containers with their information
-     * This function filters the emails and ignores emails that are not Proxmox logs.
-     * The function extracts the body from the emails and parses it. The container ID and Name
+     * This method filters the emails and ignores emails that are not Proxmox logs.
+     * The method extracts the body from the emails and parses it. The container ID and Name
      * the backup size, time and state  and the whole log text will be extracted.
      * The logs will be associated with their containers. The containers can be gotten by calling
      * {@code getContainers()} . If an information can't be parsed correctly the Log will be ignored.
@@ -65,7 +65,7 @@ public class ProxmoxParser implements Parser {
     }
 
     /**
-     * This function returns a List of all parsed containers.
+     * This method returns a List of all parsed containers.
      *
      * @return List with all found containers
      */
@@ -76,8 +76,8 @@ public class ProxmoxParser implements Parser {
 
     /**
      * adds a log entry to a container
-     * This function checks if the container already exist. If not it will creat it.
-     *  The function ads the log to the specified container.
+     * This method checks if the container already exist. If not it will creat it.
+     * The method ads the log to the specified container.
      *
      * @param ctID the ID of the container the log should be added to.
      * @param ctName the name of the container the log should be added to.

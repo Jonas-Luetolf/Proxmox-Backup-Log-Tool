@@ -64,6 +64,53 @@ public class ContainerOverviewController {
         }
     }
 
+    /**
+     * This method generates a Markdown Table containing all
+     * parsed logs form the current Container.
+     *
+     * @return MarkdownTable with the log data
+     */
+    private MarkdownTable generateMarkdownTable(){
+        MarkdownTable mdTable = new MarkdownTable(List.of("Status","Time","Size"), 3);
+        for (Log log: container.getLogs()){
+            String status = "failed";
+            if (log.isStatus()) status="ok";
+            mdTable.addRow(List.of(status, log.getTime() + " min",log.getSize()+" GiB"));
+        }
+        
+        return  mdTable;
+    }
+
+    /**
+     * This method generates a Markdown Pie Chart containing
+     * the status statistics from the current Container.
+     *
+     * @return MarkdownPieChart with the status statistics
+     */
+    private MarkdownPieChart generateMarkdownStatusChart(){
+        List<Integer> statusStatistics = container.getStatusStatistics();
+        MarkdownPieChart statusPie = new MarkdownPieChart("Status");
+        statusPie.addClass("OK", statusStatistics.get(0));
+        statusPie.addClass("FAILED", statusStatistics.get(1));
+
+        return statusPie;
+    }
+
+    /**
+     * This method returns a Markdown2DLineChart containing
+     * the size statistics from the current Container.
+     *
+     * @return Markdown2DLineChart with size statistics
+     */
+    private Markdown2DLineChart generateMarkdownSizeChart(){
+        Markdown2DLineChart sizeChart = new Markdown2DLineChart("Speicherverlauf","Log nummer", "Speicher in GiB");
+        for (Log log: container.getLogs()){
+            sizeChart.addPoint(log.getSize());
+        }
+
+        return sizeChart;
+    }
+
     @FXML
     private void handleSaveReportButtonOnCLick(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -76,29 +123,10 @@ public class ContainerOverviewController {
             MarkdownFile mdFile = new MarkdownFile(file);
             mdFile.addComponent(new MarkdownHeadline(container.getName() + " ID: " + container.getId(), 0));
 
-            // Log list Table
-            MarkdownTable mdTable = new MarkdownTable(List.of("Status","Time","Size"), 3);
-            for (Log log: container.getLogs()){
-                String status = "failed";
-                if (log.isStatus()) status="ok";
-                mdTable.addRow(List.of(status, log.getTime() + " min",log.getSize()+" GiB"));
-            }
-
-            mdFile.addComponent(mdTable);
-
-            // status Pie Chart
-            List<Integer> statusStatistics = container.getStatusStatistics();
-            MarkdownPieChart statusPie = new MarkdownPieChart("Status");
-            statusPie.addClass("OK", statusStatistics.get(0));
-            statusPie.addClass("FAILED", statusStatistics.get(1));
-            mdFile.addComponent(statusPie);
-
-           // size XY Chart
-            Markdown2DLineChart sizeChart = new Markdown2DLineChart("Speicherverlauf","Log nummer", "Speicher in GiB");
-            for (Log log: container.getLogs()){
-                sizeChart.addPoint(log.getSize());
-            }
-            mdFile.addComponent(sizeChart);
+            // add table and statistics to file
+            mdFile.addComponent(generateMarkdownTable());
+            mdFile.addComponent(generateMarkdownStatusChart());
+            mdFile.addComponent(generateMarkdownSizeChart());
 
             // Write File or print error to stdout
             try {
@@ -136,6 +164,10 @@ public class ContainerOverviewController {
         logDetailsStage.show();
     }
 
+    /**
+     * This method initializes the Log Buttons.
+     * It creates for each log a Button to open the Log-Text window.
+     */
     private void initializeLogButtons(){
         List<Log> logs = container.getLogs();
 
@@ -163,6 +195,11 @@ public class ContainerOverviewController {
         }
     }
 
+    /**
+     * This method initializes the Status chart.
+     * It fills the pie chart with the status statistics
+     * from the current Container.
+     */
     private void initializeStatusChart(){
         ArrayList<Integer> statusStatistics = container.getStatusStatistics();
         int total = container.getLogs().toArray().length;
@@ -172,6 +209,11 @@ public class ContainerOverviewController {
         ));
     }
 
+    /**
+     * This method initializes the SizeChart.
+     * It fills the XY-Chart with the size statistics
+     * from the current Container.
+     */
     private void initializeSizeChart(){
         ArrayList<Pair<Number, Number>> sizeStatistics = container.getSizeStatistics();
         XYChart.Series<Number, Number> sizeChartSeries = new XYChart.Series<>();

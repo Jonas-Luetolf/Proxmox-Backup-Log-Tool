@@ -52,6 +52,11 @@ public class Container {
         return new ArrayList<>(Arrays.asList(num_ok, this.logs.size() - num_ok));
     }
 
+    /**
+     * returns an Array with pairs containing the index of the log and the size in GiB
+     *
+     * @return ArrayList pairs for all Logs
+     */
     public ArrayList<Pair<Number, Number>> getSizeStatistics () {
         ArrayList<Pair<Number, Number>> points = new ArrayList<>();
         ListIterator<Log> iterator = logs.listIterator();

@@ -12,11 +12,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        // Load the FXML file
+        // add Parser and EmailClient to DataSingleton
         DataSingleton data = DataSingleton.getInstance();
         data.setEmailClient(new EmailClient());
         data.setParser(new ProxmoxParser());
 
+        // Load the FXML file
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/scenes/login.fxml"));
         loader.setController(new LoginController(primaryStage));
 

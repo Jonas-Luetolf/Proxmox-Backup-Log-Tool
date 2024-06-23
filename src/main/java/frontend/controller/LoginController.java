@@ -37,12 +37,21 @@ public class LoginController {
 
     @FXML
     private void openTemplateOnClick(ActionEvent event) {
-        final FileChooser fileChooser = new FileChooser();
+        FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Template File");
         File file = fileChooser.showOpenDialog(primaryStage);
 
         if (file != null) {
-            LoginTemplate loginTemplate = new LoginTemplate(file);
+            LoginTemplate loginTemplate;
+
+            // parse template file
+            try {
+                loginTemplate = new LoginTemplate(file);
+            }
+            catch (RuntimeException e){
+                System.out.println("ERROR: Parsing of template failed: " + e);
+                return;
+            }
 
             // assign entries to data loaded from file
             emailAdderEntry.setText(loginTemplate.getEmail());
@@ -67,6 +76,8 @@ public class LoginController {
 
         catch (RuntimeException e){
             System.out.println("ERROR: " + e.getMessage());
+
+            // exit function, so the overview scene doesn't get loaded
             return;
         }
 

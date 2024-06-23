@@ -11,8 +11,8 @@ public class EmailClient {
     private final Properties props = new Properties();
 
     /**
-     *Logs into the Email server if there is no active session
-     * This methode checks if there is an active session. If not, it
+     * Logs into the Email server if there is no active session
+     * This method checks if there is an active session. If not, it
      * creates a new email session using the provided properties and tries
      * to connect to the email server via imap
      *
@@ -38,7 +38,6 @@ public class EmailClient {
                 session = null;
                 throw new RuntimeException(e);
             }
-
         }
     }
 
