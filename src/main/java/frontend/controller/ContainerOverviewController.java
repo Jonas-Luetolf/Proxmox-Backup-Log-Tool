@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
+import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -41,6 +42,8 @@ public class ContainerOverviewController {
     private PieChart statusChart;
     @FXML
     private LineChart<Number, Number> sizeChart;
+    @FXML
+    private Label logTitle;
 
     public ContainerOverviewController (Container container, Stage primaryStage) {
         this.container = container;
@@ -153,8 +156,14 @@ public class ContainerOverviewController {
 
         VBox content = logDetailsLoader.load();
 
+        // generate status String
+        String status = "failed";
+        if (log.isStatus()){
+            status = "ok";
+        }
+
         Label title = (Label) content.lookup("#titelLabel");
-        title.setText("Log: %s %f GB %f min".formatted(log.isStatus(), log.getSize(), log.getTime()));
+        title.setText("Log: %s %.2f GB %.2f min".formatted(status, log.getSize(), log.getTime()));
 
         TextArea logTextArea = (TextArea) content.lookup("#logTextArea");
         logTextArea.setText(log.getLogText());
@@ -207,6 +216,12 @@ public class ContainerOverviewController {
                 new PieChart.Data("ok %d %%".formatted((statusStatistics.get(0) * 100) / total ),statusStatistics.get(0)),
                 new PieChart.Data("failed %d %%".formatted((statusStatistics.get(1) * 100) / total),statusStatistics.get(1))
         ));
+
+        // pie Chart colors
+        statusChart.getData().get(0).getNode().setStyle("-fx-pie-color: green;");
+        statusChart.getData().get(1).getNode().setStyle("-fx-pie-color: red;");
+
+        logTitle.setText("Logs: %.2f %% ok and %.2f %% failed".formatted((((double) statusStatistics.get(0)) * 100 ) / total, (((double) statusStatistics.get(1) * 100 ) / total)));
     }
 
     /**

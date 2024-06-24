@@ -7,12 +7,12 @@
    <children>
       <Label alignment="CENTER" prefHeight="420.0" prefWidth="600.0" text="Welcom to Proxmox Backup Log Tool" />
       <Label text="Enter your email server credentials" />
-      <TextField fx:id="emailAdderEntry" prefHeight="81.0" prefWidth="600.0" promptText="Email Addresse" />
-      <PasswordField fx:id="emailPwEntry" promptText="Passwort" />
+      <TextField fx:id="emailAdderEntry" prefHeight="81.0" prefWidth="600.0" promptText="Email Address" />
+      <PasswordField fx:id="emailPwEntry" promptText="Password" />
       <TextField fx:id="imapAddrEntry" promptText="IMAP Server Address" />
       <TextField fx:id="imapPort" promptText="IMAP Port" />
       <TextField fx:id="emailFolderEntry" promptText="Email Folder" text="Backup-Logs" />
       <Button mnemonicParsing="false" onAction="#loginButtonOnClick" prefHeight="25.0" prefWidth="611.0" text="Login" />
-      <Button fx:id="openTemplateButton" onAction="#openTemplateOnClick" mnemonicParsing="false" text="open template" />
+      <Button fx:id="openTemplateButton" mnemonicParsing="false" onAction="#openTemplateOnClick" prefHeight="25.0" prefWidth="620.0" text="Open Template" />
    </children>
 </VBox>

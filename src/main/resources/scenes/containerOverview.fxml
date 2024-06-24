@@ -11,9 +11,9 @@
          <font>
             <Font size="24.0" />
          </font></Label>
-      <HBox prefHeight="100.0" prefWidth="200.0">
+      <HBox prefHeight="188.0" prefWidth="600.0">
          <children>
-            <PieChart fx:id="statusChart" prefHeight="154.0" prefWidth="372.0" title="Status" />
+            <PieChart fx:id="statusChart" labelsVisible="false" legendSide="TOP" legendVisible="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="178.0" prefWidth="298.0" startAngle="90.0" title="Status" />
             <LineChart fx:id="sizeChart" title="Size">
               <xAxis>
                 <NumberAxis side="BOTTOM" />
@@ -24,13 +24,13 @@
             </LineChart>
          </children>
       </HBox>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0" prefWidth="606.0" text="Logs">
+      <Label fx:id="logTitle" alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0" prefWidth="606.0" text="Logs">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <TilePane fx:id="logButtonsPane" prefHeight="200.0" prefWidth="200.0" />
-      <Button mnemonicParsing="false" onAction="#handleBackButtonOnCLick" text="Zurück" />
-      <Button fx:id="saveReportButton" mnemonicParsing="false" onAction="#handleSaveReportButtonOnCLick" text="Bericht Speichern" />
+      <TilePane fx:id="logButtonsPane" prefHeight="99.0" prefWidth="600.0" />
+      <Button mnemonicParsing="false" onAction="#handleBackButtonOnCLick" text="Back" />
+      <Button fx:id="saveReportButton" mnemonicParsing="false" onAction="#handleSaveReportButtonOnCLick" text="Save Report" />
    </children>
 </VBox>
