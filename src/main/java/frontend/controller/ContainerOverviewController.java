@@ -121,28 +121,33 @@ public class ContainerOverviewController {
 
         File file = fileChooser.showSaveDialog(primaryStage);
 
-        if (file != null) {
-            // build Markdown file
-            MarkdownFile mdFile = new MarkdownFile(file);
-            mdFile.addComponent(new MarkdownHeadline(container.getName() + " ID: " + container.getId(), 0));
-
-            // add table and statistics to file
-            mdFile.addComponent(generateMarkdownTable());
-            mdFile.addComponent(generateMarkdownStatusChart());
-            mdFile.addComponent(generateMarkdownSizeChart());
-
-            // Write File or print error to stdout
-            try {
-                mdFile.writeToFile();
-            }
-
-            catch (RuntimeException e){
-                System.out.println("ERROR write to file: " + e.getMessage());
-            }
+        // check if file is not null
+        if (file == null){
+            System.out.println("ERROR: File could not be saved");
+            return;
         }
 
-        else {
-            System.out.println("ERROR: File could not be saved");
+        // append .md to file if not already added
+        if (!file.getName().endsWith(".md")) {
+            file = new File(file.getAbsolutePath() + ".md");
+        }
+
+        // build Markdown file
+        MarkdownFile mdFile = new MarkdownFile(file);
+        mdFile.addComponent(new MarkdownHeadline(container.getName() + " ID: " + container.getId(), 0));
+
+        // add table and statistics to file
+        mdFile.addComponent(generateMarkdownTable());
+        mdFile.addComponent(generateMarkdownStatusChart());
+        mdFile.addComponent(generateMarkdownSizeChart());
+
+        // Write File or print error to stdout
+        try {
+            mdFile.writeToFile();
+        }
+
+        catch (RuntimeException e){
+            System.out.println("ERROR write to file: " + e.getMessage());
         }
     }
 
